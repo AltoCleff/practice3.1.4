@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.kata.spring.boot_security.demo.exception.UserAlreadyExistException;
 import ru.kata.spring.boot_security.demo.exception.UserNotFoundException;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
@@ -51,24 +52,22 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public boolean saveUser(User user) {
+    public void saveUser(User user) {
         User userDB = userRepository.findByLogin(user.getLogin());
 
         if(userDB != null) {
-            return false;
+            throw new UserAlreadyExistException();
         }
 
         user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        return true;
     }
 
-    public boolean deleteUser(Long id) {
+    public void deleteUser(Long id) {
         Optional<User> user = userRepository.findById(id);
         if(user.isPresent()) {
             userRepository.deleteById(id);
-            return true;
         } else {
             throw new UserNotFoundException();
         }
