@@ -13,8 +13,12 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 @PreAuthorize("hasAnyRole('ADMIN')")
 public class AdminController {
 
+
+    private final UserService userService;
     @Autowired
-    private UserService userService;
+    public AdminController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
     public String userList(Model model) {
