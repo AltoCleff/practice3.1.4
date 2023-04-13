@@ -1,36 +1,85 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>User Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Admin page</title>
+    <link rel="shortcut icon" href="/icons/springicon.png" type="image/png">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-<h1>User Profile</h1>
 
-<div>
-    <label>Name:</label>
-    <span th:text="${user.getName()}"></span>
+<div class="container-fluid" >
+    <div class="row">
+        <div class="col-12">
+            <nav class="navbar navbar-dark fixed-top bg-dark" style="height: 60px">
+                <div class="navbar-brand px-3" style="font-size: 25px;">
+                    <b th:text="${user.email}">...@mail.ru</b>
+                    <span>with roles: </span>
+                    <span th:each="role : ${user.roles}"
+                          th:text="${role.name}">role
+                    </span>
+                </div>
+                <ul class="navbar-nav px-3">
+                    <form th:action="@{/logout}" method="post">
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button class="btn btn-dark " style="font-size: 20px; color:lightgrey" type="submit">Logout</button>
+                        </div>
+                    </form>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="container-fluid" style="margin-top: 80px;">
+    <div class="row">
+        <div class="col-2">
+            <div class="nav flex-column nav-pills" id="tab-buttons">
+                <a class="nav-link" id="user-tab-button" data-toggle="pill" href="#user-tab">USER</a>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="user-tab">
+                    <h2 style="font-size: 45px;">User information-page</h2>
+                    <div class="tab-pane fade show active">
+                        <div class="card">
+                            <h5 class="card-header">About user</h5>
+                            <div class="card-body">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>First name</th>
+                                        <th>Last name</th>
+                                        <th>Age</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <th th:text="${user.id}" scope="row"></th>
+                                        <td th:text="${user.name}"></td>
+                                        <td th:text="${user.lastName}"></td>
+                                        <td th:text="${user.age}"></td>
+                                        <td th:text="${user.email}"></td>
+                                        <td th:each="role : ${user.roles}"
+                                            th:text="${role.name}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div>
-    <label>Last Name:</label>
-    <span th:text="${user.getLastName()}"></span>
-</div>
-
-<div>
-    <label>Email:</label>
-    <span th:text="${user.getEmail()}"></span>
-</div>
-
-<div>
-    <label>Login:</label>
-    <span th:text="${user.getLogin()}"></span>
-</div>
-
-<div>
-    <label>Password:</label>
-    <span th:text="${user.getPassword()}"></span>
-</div>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>

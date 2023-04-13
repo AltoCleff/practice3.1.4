@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,14 +22,16 @@ public class AdminController {
     }
 
     @GetMapping
-    public String userList(Model model) {
+    public String userList(Model model, Authentication authentication) {
         model.addAttribute("users", userService.allUsers());
-        model.addAttribute("user", new User());
-        return "users";
+        model.addAttribute("editableUser", new User());
+        User user = (User) authentication.getPrincipal();
+        model.addAttribute("user", user);
+        return "admin";
     }
 
     @PostMapping
-    public String addUser(@ModelAttribute("user") User user) {
+    public String addUser(@ModelAttribute("editableUser") User user) {
         userService.saveUser(user);
         return "redirect:/admin";
     }
@@ -40,14 +43,7 @@ public class AdminController {
     }
 
     @PutMapping("/{id}")
-    public String updateUser(@PathVariable("id") long id, Model model) {
-
-        model.addAttribute("user", userService.findUserById(id));
-        return "updateUser";
-    }
-
-    @PostMapping ("/updated")
-    public String update(@ModelAttribute("user") User user) {
+    public String updateUser(@ModelAttribute("editableUser") User user) {
         userService.saveUser(user);
         return "redirect:/admin";
     }

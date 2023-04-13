@@ -14,16 +14,16 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String login;
-
     private String password;
 
     private String name;
 
     private String lastName;
 
+    private int age;
+
     private String email;
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "users_id"),
@@ -42,12 +42,12 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getLogin() {
-        return login;
+    public int getAge() {
+        return age;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setAge(int age) {
+        this.age = age;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return getLogin();
+        return getEmail();
     }
 
     @Override
