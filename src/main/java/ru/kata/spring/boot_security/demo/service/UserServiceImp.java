@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.kata.spring.boot_security.demo.exception.UserAlreadyExistException;
 import ru.kata.spring.boot_security.demo.exception.UserNotFoundException;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
@@ -47,14 +46,6 @@ public class UserServiceImp implements UserService {
     }
     @Transactional
     public void saveUser(User user) {
-        Optional<User> userDB = Optional.ofNullable(userRepository.findByEmail(user.getEmail()));
-
-        userDB.ifPresent(dbUser -> {
-            if (user.getId() != null && !user.getId().equals(dbUser.getId()) || user.getEmail().equals(dbUser.getEmail())) {
-                throw new UserAlreadyExistException();
-            }
-        });
-
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
