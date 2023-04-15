@@ -6,11 +6,6 @@
     <title>Admin page</title>
     <link rel="shortcut icon" href="/icons/springicon.png" type="image/png">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <script src="code.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -19,9 +14,11 @@
         <div class="col-12">
             <nav class="navbar navbar-dark fixed-top bg-dark" style="height: 60px">
                 <div class="navbar-brand px-3" style="font-size: 25px;">
-                    <b id="userEmail">@mail.ru</b>
+                    <b th:text="${user.email}">...@mail.ru</b>
                     <span>with roles: </span>
-                    <span id="userRoles">role</span>
+                    <span th:each="role : ${user.roles}"
+                          th:text="${role.name}">role
+                    </span>
                 </div>
                 <ul class="navbar-nav px-3">
                     <form th:action="@{/logout}" method="post">
@@ -38,7 +35,7 @@
     <div class="row">
         <div class="col-2">
             <div class="nav flex-column nav-pills" id="tab-buttons">
-                <a class="nav-link active" id="user-tab-button" data-toggle="pill" href="#user-tab">USER</a>
+                <a class="nav-link" id="user-tab-button" data-toggle="pill" href="#user-tab">USER</a>
             </div>
         </div>
         <div class="col-9">
@@ -60,7 +57,17 @@
                                         <th>Role</th>
                                     </tr>
                                     </thead>
-                                    <tbody id="userTableBody"></tbody>
+                                    <tbody>
+                                    <tr>
+                                        <th th:text="${user.id}" scope="row"></th>
+                                        <td th:text="${user.name}"></td>
+                                        <td th:text="${user.lastName}"></td>
+                                        <td th:text="${user.age}"></td>
+                                        <td th:text="${user.email}"></td>
+                                        <td th:each="role : ${user.roles}"
+                                            th:text="${role.name}"></td>
+                                    </tr>
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -70,5 +77,9 @@
         </div>
     </div>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>

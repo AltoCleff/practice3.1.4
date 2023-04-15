@@ -32,12 +32,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf()
-                .ignoringAntMatchers("/api/**").and()
                 .authorizeRequests()
+                .antMatchers("/", "/index").permitAll()
                 .antMatchers("/login").not().fullyAuthenticated()
-                .antMatchers("/user/**", "/api/user/**").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/admin/**", "/api/users/**").hasRole("ADMIN")
+                .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
